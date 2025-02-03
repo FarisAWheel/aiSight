@@ -31,7 +31,7 @@ export async function runYOLOInference(
 
     // Mock example post-processing
     const boxes = [
-      { x: 100, y: 150, width: 50, height: 70 }, // Replace with your processing logic
+      { x: 100, y: 150, width: 50, height: 70 }, 
     ];
 
     return { boxes };
