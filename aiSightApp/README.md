@@ -18,7 +18,7 @@ This project is an Expo React Native application. Follow the instructions below 
 1. **Clone the Repository**:
 
    ```bash
-   git clone https://github.com/your-username/aiSightApp.git
+   git@github.com:FarisAWheel/aiSight.git
    cd aiSightApp
    ```
 
