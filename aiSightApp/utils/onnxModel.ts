@@ -1,6 +1,6 @@
 import { InferenceSession, Tensor } from 'onnxruntime-react-native';
 
-const modelPath = require('../models/yolov8n.onnx'); // Update the path to your model
+const modelPath = require('../assets/models/model.onnx'); 
 
 export async function loadModel() {
   const session = await InferenceSession.create(modelPath);

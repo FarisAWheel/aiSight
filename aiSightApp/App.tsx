@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import CameraComponent from './components/CameraComponent';
+import CameraComponent from './components/ImagePickerComponent';
 
 export default function App() {
   return (
