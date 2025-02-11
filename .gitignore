@@ -1,4 +1,7 @@
-node_modules
+# virtual enviornments
 venv
-android
-ios
+.venv
+
+# local env files
+.env*.local
+
