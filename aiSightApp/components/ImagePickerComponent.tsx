@@ -4,24 +4,27 @@ import * as ImagePicker from 'expo-image-picker';
 import { loadModel, runModel } from '../utils/onnxModel';
 import { InferenceSession, Tensor } from 'onnxruntime-react-native';
 
+
 export default function ImagePickerComponent() {
     const [image, setImage] = useState<string | null>(null);
     const [predictions, setPredictions] = useState<any[]>([]);
     const [model, setModel] = useState<InferenceSession | null>(null);
 
+    // Loads the model
     useEffect(() => {
         (async () => {
-            // Load the model
+            console.log("Loading model...");
             const loadedModel = await loadModel();
             setModel(loadedModel);
+            console.log("Model loaded successfully");
         })();
     }, []);
 
+    // Handles images picking, then calls processImage to eventually run inf
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            mediaTypes: ['images'],
             allowsEditing: true,
-            aspect: [4, 3],
             quality: 1,
         });
 
@@ -35,14 +38,48 @@ export default function ImagePickerComponent() {
     };
 
     const processImage = async (uri: string) => {
+        console.log("Processing image:", uri);
         if (model) {
-            const response = await fetch(uri);
-            const blob = await response.blob();
-            const imageData = await blob.arrayBuffer();
-            const imageTensor = new Tensor('float32', new Float32Array(imageData), [1, 3, 640, 640]); // Adjust dimensions as needed
-            const results = await runModel(model, imageTensor);
-            setPredictions(Object.values(results));
-            console.log(results);
+            console.log("Model is loaded, running inference...");
+
+            try {
+                const canvas = new Canvas();
+                canvas.width = 640;
+                canvas.height = 640;
+
+                const ctx = canvas.getContext('2d');
+                const img = new CanvasImage(canvas);
+                img.src = uri;
+
+                img.addEventListener('load', async () => {
+                    ctx.drawImage(img, 0, 0, 640, 640);
+
+                    const imageData = ctx.getImageData(0, 0, 640, 640);
+                    const { data } = imageData;
+                    const floatData = new Float32Array(640 * 640 * 3);
+
+                    // Convert RGBA to RGB and normalize
+                    let j = 0;
+                    for (let i = 0; i < data.length; i += 4) {
+                        floatData[j++] = data[i] / 255.0;     // R
+                        floatData[j++] = data[i + 1] / 255.0; // G
+                        floatData[j++] = data[i + 2] / 255.0; // B
+                    }
+
+                    const imageTensor = new Tensor('float32', floatData, [1, 3, 640, 640]);
+                    console.log("Image tensor created:", imageTensor);
+
+                    // Run inference
+                    const results = await runModel(model, imageTensor);
+                    console.log("Inference results:", results);
+
+                    setPredictions(Object.values(results));
+                });
+            } catch (error) {
+                console.error("Error processing image:", error);
+            }
+        } else {
+            console.log("Model is not loaded");
         }
     };
 
@@ -51,11 +88,15 @@ export default function ImagePickerComponent() {
             <Button title="Pick an image from camera roll" onPress={pickImage} />
             {image && <Image source={{ uri: image }} style={styles.image} />}
             <View style={styles.overlay}>
-                {predictions.map((prediction, index) => (
-                    <Text key={index} style={styles.predictionText}>
-                        {prediction.label}: {prediction.confidence.toFixed(2)}
-                    </Text>
-                ))}
+                {predictions.length > 0 ? (
+                    predictions.map((prediction, index) => (
+                        <Text key={index} style={styles.predictionText}>
+                            {prediction.label}: {prediction.confidence.toFixed(2)}
+                        </Text>
+                    ))
+                ) : (
+                    <Text style={styles.predictionText}>No predictions</Text>
+                )}
             </View>
         </View>
     );

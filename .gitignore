@@ -5,3 +5,4 @@ venv
 # local env files
 .env*.local
 
+.DS_Store
