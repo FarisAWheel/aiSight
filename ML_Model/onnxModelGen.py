@@ -1,7 +1,14 @@
-from ultralytics import YOLO  # type: ignore
+from ultralytics import YOLO
+import cv2
 
-# Load YOLOv8n model
-model = YOLO("yolov8n.pt")
+# Load the ONNX model (use `task=detect` for clarity)
+model = YOLO("yolo11n.onnx", task="detect")
 
-# Export the model to ONNX format
-model.export(format="onnx")
+# Run inference
+results = model("test.jpeg")
+
+# Extract class IDs
+class_ids = results[0].boxes.cls.cpu().numpy()
+
+# Check if class IDs are within 0-79 (COCO class range)
+print("Detected class IDs:", class_ids)
