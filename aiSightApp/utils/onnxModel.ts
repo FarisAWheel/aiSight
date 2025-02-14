@@ -103,10 +103,14 @@ export async function runModel(session: InferenceSession, imageTensor: Tensor) {
   // Extract the output tensor
   const outputTensor = results.output0;
   console.log("Model output shape:", outputTensor.dims);
+
   // Reshape the output tensor to [8400, 84]
   const outputData = outputTensor.data as Float32Array;
   const outputTransposed = [];
+
+  // Iterate through the output data and reshape it
   for (let i = 0; i < 8400; i++) {
+    // Slice the output data into chunks of 84 elements
     outputTransposed.push(outputData.slice(i * 84, (i + 1) * 84));
   }
 
@@ -114,28 +118,42 @@ export async function runModel(session: InferenceSession, imageTensor: Tensor) {
   const detections = [];
   const confidenceThreshold = 0.7;
 
+  // Iterate through the reshaped output data
   for (let i = 0; i < 8400; i++) {
+    // Destructure the outputTransposed array
+    // cx, cy: center x and y coordinates of the bounding box
+    // w, h: width and height of the bounding box
+    // ...classScores: array of class scores for each class
     const [cx, cy, w, h, ...classScores] = outputTransposed[i];
+
     // Apply sigmoid to convert logits to probabilities
     const classProbabilities = classScores.map(
       score => 1 / (1 + Math.exp(-score))
     );
+
+    // Get the maximum class probability
     const maxScore = Math.max(...classProbabilities);
+
+    // Get the class ID with the maximum probability
     const classId = classProbabilities.indexOf(maxScore);
 
+    // If the maximum probability is greater than the confidence threshold
     if (maxScore > confidenceThreshold) {
+      // Add the detection to the detections array
       detections.push({
-        cx: cx / 640,
-        cy: cy / 640,
-        w: w / 640,
-        h: h / 640,
-        classId,
+        cx: cx / 640, // Normalize center x
+        cy: cy / 640, // Normalize center y
+        w: w / 640, // Normalize width
+        h: h / 640, // Normalize height
+        classId, // Class ID
         className: classNames[classId], // Add class name
-        confidence: maxScore
+        confidence: maxScore // Confidence score
       });
     }
   }
+
   //hey chat, its me tristan from hit show Turburculosis with Tristan. I'm here to help you on your journey to build this app. So sit back, and lets enjoy the ride before I die of tuberculosis.
+
   // Apply Non-Maximum Suppression (NMS)
   const nmsDetections = nms(detections, 0.1);
 
