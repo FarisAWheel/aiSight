@@ -1,16 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { AntDesign } from '@expo/vector-icons';
+import  GradientBackground  from '../components/GradientBackground'
 
+//welcome page
 const WelcomePage = () => {
     return (
-        <LinearGradient
-            colors={['#9FD2F0', '#BADFC0', '#9BB5DE']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.container}
-        >
+        <GradientBackground>
             {/* <Image source = {require('../assets/aiSIghtLogo.png')} style={styles.logo}/> */}
             
                 <Text style={styles.helloText}>Hello,</Text>
@@ -20,18 +16,11 @@ const WelcomePage = () => {
             <TouchableOpacity style={styles.button}>
                 <Text style={styles.buttonText}>Get started</Text>
             </TouchableOpacity>
-        </LinearGradient>
+        </GradientBackground>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%',
-        // paddingLeft: 50,
-    },
     helloText: {
         fontSize: 48,
         fontStyle: 'italic',
