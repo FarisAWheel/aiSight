@@ -1,13 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, Text, View } from 'react-native';
 import WelcomePage from './pages/welcome_page';
+import BluetoothPage from './pages/Bluetooth_connect_page';
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <WelcomePage />
-      <StatusBar style="auto" />
-    </View>
+      <NavigationContainer>
+            <Stack.Navigator initialRouteName="Welcome" screenOptions={{headerShown: false}}>
+                <Stack.Screen name="Welcome" component={WelcomePage} />
+                <Stack.Screen name="Bluetooth" component={BluetoothPage} />
+            </Stack.Navigator>
+        </NavigationContainer>
   );
 }
 

@@ -1,10 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import  GradientBackground  from '../components/GradientBackground'
 
 //welcome page
-const WelcomePage = () => {
+const WelcomePage = ({navigation}:{navigation:any}) => {
     return (
         <GradientBackground>
             {/* <Image source = {require('../assets/aiSIghtLogo.png')} style={styles.logo}/> */}
@@ -13,7 +12,7 @@ const WelcomePage = () => {
                 <Text style={styles.welcomeText}>Welcome to AiSight!</Text>
                 <View style={styles.line} />
 
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('Bluetooth')}}>
                 <Text style={styles.buttonText}>Get started</Text>
             </TouchableOpacity>
         </GradientBackground>
