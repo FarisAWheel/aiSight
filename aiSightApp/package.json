@@ -9,12 +9,14 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-navigation/stack": "^7.1.1",
     "expo": "~52.0.31",
+    "expo-linear-gradient": "~14.0.2",
     "expo-status-bar": "~2.0.1",
     "react": "18.3.1",
     "react-native": "0.76.7",
     "react-native-linear-gradient": "^2.8.3",
-    "expo-linear-gradient": "~14.0.2"
+    "react-native-vector-icons": "^10.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
