@@ -6,8 +6,6 @@ import  GradientBackground  from '../components/GradientBackground'
 const WelcomePage = ({navigation}:{navigation:any}) => {
     return (
         <GradientBackground>
-            {/* <Image source = {require('../assets/aiSIghtLogo.png')} style={styles.logo}/> */}
-            
                 <Text style={styles.helloText}>Hello,</Text>
                 <Text style={styles.welcomeText}>Welcome to AiSight!</Text>
                 <View style={styles.line} />
@@ -53,13 +51,6 @@ const styles = StyleSheet.create({
         color: '#9BB5DE',
         fontWeight: 'bold',
         marginRight: 10,
-    },
-    logo:{
-        width: 300,
-        height: 300,
-        marginBottom: 20,
-        backgroundColor: 'white',
-        borderRadius: 50,
     }
 });
 
