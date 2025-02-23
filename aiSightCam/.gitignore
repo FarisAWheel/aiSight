@@ -1,0 +1,17 @@
+# Build output
+/build/
+CMakeFiles
+CMakeCache.txt
+cmake_install.cmake
+
+# Compiled binaries and maps
+*.bin
+*.elf
+*.map
+
+# SDK config backups or intermediate files
+sdkconfig.ci
+sdkconfig.old
+
+# IDE settings
+.vscode/
