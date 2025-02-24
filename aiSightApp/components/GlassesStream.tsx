@@ -11,9 +11,6 @@ import {
 } from "react-native";
 import { NetworkInfo } from "react-native-network-info";
 
-const SERVICE_UUID = "7744f639-d553-4757-9868-404fe754ea34";
-const CHARACTERISTIC_UUID = "bf16bfa0-4a61-47a8-9d4f-02c27947d36a";
-
 const GlassesStream = () => {
   const [ssid, setSsid] = useState("");
   const [password, setPassword] = useState("");
@@ -29,28 +26,6 @@ const GlassesStream = () => {
     if (ssid && !password) showNetworkDetectedModal(true);
     else if (!ssid && !password) showHotspotModal(true);
   }, []);
-
-  useEffect(() => {
-    if (ssid && password) {
-      console.log("ssid: ", ssid);
-      console.log("password: ", password);
-      if (__DEV__) {
-        const manager = new BleManager();
-        manager.startDeviceScan([SERVICE_UUID], null, (error, device) => {
-          if (device?.name === "SmartGlasses") {
-            manager.stopDeviceScan();
-            device.connect().then(() => {
-              device.writeCharacteristicWithResponseForService(
-                SERVICE_UUID,
-                CHARACTERISTIC_UUID,
-                btoa(JSON.stringify({ ssid, password })),
-              );
-            });
-          }
-        });
-      }
-    }
-  });
 
   return (
     <View>
