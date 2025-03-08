@@ -11,35 +11,34 @@ type Props = {
 
 const Slider = ({ itemList }: Props) => {
     const scrollX = useSharedValue(0);
-    const [paginationIndex, setPaginationIndex] = useState(0); // Correct usage of useState
-    
+    const [paginationIndex, setPaginationIndex] = useState(0);
+
     const onScrollHandler = useAnimatedScrollHandler({
         onScroll: (e) => {
             scrollX.value = e.contentOffset.x;
         }
     });
 
-    const onViewableItemsChanged = ({viewableItems} : {viewableItems: ViewToken[] }) => {
-        if(viewableItems[0].index !== undefined && viewableItems[0].index !== null )
-            {
-                setPaginationIndex(viewableItems[0].index);
-            }
-    };
+    const onViewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewToken[] }) => {
+        if (viewableItems[0]?.index !== undefined && viewableItems[0]?.index !== null) {
+            setPaginationIndex(viewableItems[0].index);
+        }
+    });
 
     const viewabilityConfig = {
-        itemVisiblePercentThreshold: 50,
-    }
+        itemVisiblePercentThreshold: 50
+    };
 
     const viewabilityConfigCallbackPairs = useRef([
-        { viewabilityConfig, onViewableItemsChanged }
+        { viewabilityConfig, onViewableItemsChanged: onViewableItemsChanged.current }
     ]);
 
     return (
         <View>
             <Animated.FlatList
-                data={itemList} 
+                data={itemList}
                 renderItem={({ item, index }) => (
-                    <SliderItem item={item} index={index} scrollX={scrollX} /> 
+                    <SliderItem item={item} index={index} scrollX={scrollX} buttonText={item.buttonType} />
                 )}
                 horizontal
                 showsHorizontalScrollIndicator={false}
@@ -47,10 +46,10 @@ const Slider = ({ itemList }: Props) => {
                 onScroll={onScrollHandler}
                 viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
             />
-            <Pagination items={itemList} scrollX={scrollX} paginationIndex={paginationIndex}/>
+            <Pagination items={itemList} scrollX={scrollX} paginationIndex={paginationIndex} />
         </View>
     );
-}
+};
 
 export default Slider;
 

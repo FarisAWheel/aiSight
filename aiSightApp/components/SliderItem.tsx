@@ -2,17 +2,18 @@ import { StyleSheet, Text, View, Image, Dimensions } from 'react-native';
 import React from 'react';
 import { ImageSliderType } from '../data/SliderData';
 import { LinearGradient } from 'expo-linear-gradient';
-import Animated, { Extrapolation, interpolate, SharedValue, useAnimatedStyle, useSharedValue} from 'react-native-reanimated';
+import Animated, { Extrapolation, interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 
 type Props = {
     item: ImageSliderType;
     index: number;
     scrollX: SharedValue<number>;
+    buttonText: string;
 }
 
-const{width} = Dimensions.get('screen');
+const { width } = Dimensions.get('screen');
 
-const SliderItem = ({item, index, scrollX}: Props) => {
+const SliderItem = ({ item, index, scrollX, buttonText }: Props) => {
     const rnAnimatedStyle = useAnimatedStyle(() => {
         return {
             transform: [
@@ -20,7 +21,7 @@ const SliderItem = ({item, index, scrollX}: Props) => {
                     translateX: interpolate(
                         scrollX.value,
                         [(index - 1) * width, index * width, (index + 1) * width],
-                        [-width*0.25, 0, width*0.25],
+                        [-width * 0.25, 0, width * 0.25],
                         Extrapolation.CLAMP,
                     ),
                 },
@@ -30,12 +31,13 @@ const SliderItem = ({item, index, scrollX}: Props) => {
     return (
         <Animated.View style={[styles.itemContainer, rnAnimatedStyle]}>
             <Image source={item.image} style={{
-                width: 332, 
-                height: 236.97, 
-                backgroundColor: 'white', 
+                width: 332,
+                height: 236.97,
+                backgroundColor: 'white',
                 borderRadius: 32,
-                marginTop: 10,}}
-                />
+                marginTop: 10,
+            }}
+            />
             <Text style={styles.instructionText}>{item.title}</Text>
             <LinearGradient
                 colors={['#9BB5DE', '#BCE6FF']}
@@ -43,7 +45,7 @@ const SliderItem = ({item, index, scrollX}: Props) => {
                 start={{ x: 0, y: 0 }}
                 end={{ x: 0, y: 1 }}
             >
-                <Text style={styles.buttonText}>Remember a person</Text>
+                <Text style={styles.buttonText}>{buttonText}</Text>
             </LinearGradient>
         </Animated.View>
     );
@@ -58,7 +60,7 @@ const styles = StyleSheet.create({
         width: width,
     },
     instructionButton: {
-        width: '55%', 
+        width: '55%',
         height: '12%',
         borderRadius: 15,
         alignItems: 'center',
@@ -67,9 +69,9 @@ const styles = StyleSheet.create({
     },
     instructionText: {
         width: '100%',
-        color: '#555555', 
-        fontSize: 18, 
-        fontFamily: 'SF Pro Display', 
+        color: '#555555',
+        fontSize: 18,
+        fontFamily: 'SF Pro Display',
         fontWeight: '600',
         marginTop: 25,
         marginBottom: 15,
@@ -77,12 +79,9 @@ const styles = StyleSheet.create({
         letterSpacing: 0.3,
     },
     buttonText: {
-        // Remember a person
-        color: 'white', 
-        fontSize: 20, 
-        fontFamily: 'SF Pro Display', 
+        color: 'white',
+        fontSize: 20,
+        fontFamily: 'SF Pro Display',
         fontWeight: '700',
     },
-
-})
-
+});
