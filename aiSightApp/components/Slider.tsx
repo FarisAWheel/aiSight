@@ -7,9 +7,10 @@ import Pagination from './Pagniation';
 
 type Props = {
     itemList: ImageSliderType[];
+    navigation: any; // Add navigation prop
 };
 
-const Slider = ({ itemList }: Props) => {
+const Slider = ({ itemList, navigation }: Props) => {
     const scrollX = useSharedValue(0);
     const [paginationIndex, setPaginationIndex] = useState(0);
 
@@ -38,7 +39,7 @@ const Slider = ({ itemList }: Props) => {
             <Animated.FlatList
                 data={itemList}
                 renderItem={({ item, index }) => (
-                    <SliderItem item={item} index={index} scrollX={scrollX} buttonText={item.buttonType} />
+                    <SliderItem item={item} index={index} scrollX={scrollX} buttonText={item.buttonType} navigation={navigation} />
                 )}
                 horizontal
                 showsHorizontalScrollIndicator={false}

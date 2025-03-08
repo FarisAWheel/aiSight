@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { ImageSliderType } from '../data/SliderData';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -9,11 +9,12 @@ type Props = {
     index: number;
     scrollX: SharedValue<number>;
     buttonText: string;
+    navigation: any;
 }
 
 const { width } = Dimensions.get('screen');
 
-const SliderItem = ({ item, index, scrollX, buttonText }: Props) => {
+const SliderItem = ({ item, index, scrollX, buttonText, navigation }: Props) => {
     const rnAnimatedStyle = useAnimatedStyle(() => {
         return {
             transform: [
@@ -39,14 +40,16 @@ const SliderItem = ({ item, index, scrollX, buttonText }: Props) => {
             }}
             />
             <Text style={styles.instructionText}>{item.title}</Text>
-            <LinearGradient
-                colors={['#9BB5DE', '#BCE6FF']}
-                style={styles.instructionButton}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 0, y: 1 }}
-            >
-                <Text style={styles.buttonText}>{buttonText}</Text>
-            </LinearGradient>
+            <TouchableOpacity onPress={() => navigation.navigate('Bluetooth')}>
+                <LinearGradient
+                    colors={['#9BB5DE', '#BCE6FF']}
+                    style={styles.instructionButton}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 0, y: 1 }}
+                >
+                    <Text style={styles.buttonText}>{buttonText}</Text>
+                </LinearGradient>
+            </TouchableOpacity>
         </Animated.View>
     );
 }
@@ -60,8 +63,8 @@ const styles = StyleSheet.create({
         width: width,
     },
     instructionButton: {
-        width: '55%',
-        height: '12%',
+        width: 250,
+        height: '35%',
         borderRadius: 15,
         alignItems: 'center',
         justifyContent: 'center',
@@ -73,7 +76,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontFamily: 'SF Pro Display',
         fontWeight: '600',
-        marginTop: 25,
+        marginTop: 15,
         marginBottom: 15,
         textAlign: 'center',
         letterSpacing: 0.3,
