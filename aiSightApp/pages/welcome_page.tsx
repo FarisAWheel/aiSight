@@ -7,7 +7,7 @@ const WelcomePage = ({navigation}:{navigation:any}) => {
     return (
         <GradientBackground>
                 <Text style={styles.helloText}>Hello,</Text>
-                <Text style={styles.welcomeText}>Welcome to AiSight!</Text>
+                <Text style={styles.welcomeText}>Welcome to AiSight</Text>
                 <View style={styles.line} />
 
             <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('Bluetooth')}}>
