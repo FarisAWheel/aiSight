@@ -12,7 +12,6 @@ const bgImage = require('../assets/bgImage.png');
 const HomePage = ({ navigation }: { navigation: any }) => {
     return (
         <ImageBackground source={bgImage} style={styles.backgroundImage}>
-            <LeftBackArrowButton onPress={() => navigation.navigate('Bluetooth')} />
             <View
                 style={[
                     styles.container,
@@ -22,7 +21,7 @@ const HomePage = ({ navigation }: { navigation: any }) => {
                 ]}
             >
                 {/* Top part */}
-                <View style={{ flex: 1.5, justifyContent: 'center', alignItems: 'center' }}>
+                <View style={{ flex: 1.5, justifyContent: 'center', alignItems: 'center', left: 20, }}>
                     <View style={styles.topContainer}>
                         <Image source={logoBg} style={styles.logo} />
                         <View style={styles.innerTop}>
@@ -40,16 +39,10 @@ const HomePage = ({ navigation }: { navigation: any }) => {
                         start={{ x: 0, y: 0 }}
                         end={{ x: 0, y: 1 }}
                     >
-                        <View style={styles.flexBox} testID='mainContainer'>
+                        <View style={styles.flexBox}>
                             <Text style={styles.view1Text}>Hand Gestures</Text>
                             {/* rectangle where demonstration image will be */}
                             <Slider itemList={ImageSlider} navigation={navigation} />
-                            {/* three dots below rectangle */}
-                            <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 15 }}>
-                                <View style={{ width: 8.16, height: 8.16, backgroundColor: '#555555', borderRadius: 9999, marginRight: 5 }} />
-                                <View style={{ width: 6.93, height: 6.93, backgroundColor: 'rgba(84.77, 84.77, 84.77, 0.52)', borderRadius: 9999, marginRight: 5 }} />
-                                <View style={{ width: 6.93, height: 6.93, backgroundColor: 'rgba(84.77, 84.77, 84.77, 0.52)', borderRadius: 9999, marginRight: 5 }} />
-                            </View>
                             {/* Instructions */}
                             <View style={{ height: '12%', width: '95%', alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
                             </View>
@@ -59,26 +52,26 @@ const HomePage = ({ navigation }: { navigation: any }) => {
 
                 {/* Bottom Portion */}
                 <View style={{ justifyContent: 'center', alignItems: 'center' }} />
-                <View style={{ height: '10%', width: '70%' }}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Bluetooth')}>
-                        <LinearGradient
-                            colors={['#BADFC0', '#9FD2F0']}
-                            style={styles.viewFeedButton}
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 0, y: 1.5 }}
-                        >
-                            <Text style={styles.ViewfeedText}>View live AiSight feed</Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
-                    <View style={{ flexDirection: 'row' }}>
-                        <TouchableOpacity style={styles.settingsButton} onPress={() => navigation.navigate('Bluetooth')}>
-                            <Text style={styles.ViewbuttonText}>Settings</Text>
+                    <View style={{ height: '10%', width: '70%' }}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Bluetooth')}>
+                            <LinearGradient
+                                colors={['#BADFC0', '#9FD2F0']}
+                                style={styles.viewFeedButton}
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 0, y: 1.5 }}
+                            >
+                                <Text style={styles.ViewfeedText}>View live AiSight feed</Text>
+                            </LinearGradient>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.historyButton} onPress={() => navigation.navigate('Bluetooth')}>
-                            <Text style={styles.ViewbuttonText}>People History</Text>
-                        </TouchableOpacity>
+                        <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity style={styles.settingsButton} onPress={() => navigation.navigate('Bluetooth')}>
+                                <Text style={styles.ViewbuttonText}>Settings</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.historyButton} onPress={() => navigation.navigate('Bluetooth')}>
+                                <Text style={styles.ViewbuttonText}>People History</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
             </View>
         </ImageBackground>
     );
@@ -91,7 +84,7 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
     },
     container: {
-        flex: 0.80,
+        flex: 0.82,
         width: '100%',
     },
     topContainer: {
@@ -103,10 +96,12 @@ const styles = StyleSheet.create({
     },
     innerTop: {
         flexDirection: 'column',
+        top: 10,
     },
     logo: {
         width: 80,
         height: 80,
+        top: 15,
     },
     topText: {
         // Hi there, what can I do for you?
@@ -133,22 +128,25 @@ const styles = StyleSheet.create({
         flex: 3.2,
         width: deviceWidth,
         alignItems: 'center',
+        zIndex: 5,
     },
     boxShadow: {
         flex: 3.2,
         width: deviceWidth,
         alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.85,
-        backgroundColor: 'transparent',
-        shadowRadius: 18,
+        // shadowColor: '#000',
+        // shadowOffset: { width: 0, height: 0 },
+        // shadowOpacity: 0.65,
+        // backgroundColor: 'transparent',
+        // shadowRadius: 18,
+        zIndex: 1,
     },
     flexBox: {
         flexDirection: 'column',
         alignItems: 'center',
         width: '100%',
         height: '100%',
+        zIndex: 5,
     },
     // Hand gestures text
     view1Text: {
@@ -178,11 +176,11 @@ const styles = StyleSheet.create({
     },
     viewFeedButton: {
         width: '120%',
-        height: '70%',
+        height: '80%',
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 40,
+        marginTop: 30,
         left: 30,
         shadowColor: '#000',
         shadowOffset: { width: 272, height: 50 },
@@ -201,27 +199,27 @@ const styles = StyleSheet.create({
     settingsButton: {
         backgroundColor: '#FFFFFF',
         width: '50%',
-        height: '75%',
+        height: '85%',
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 40,
+        marginTop: 25,
         marginRight: 20,
         left: 30,
-        shadowColor: '#000',
-        shadowOffset: { width: 272, height: 50 },
-        shadowOpacity: 0.25,
-        shadowRadius: 7.2,
+        // shadowColor: '#000',
+        // shadowOffset: { width: 272, height: 50 },
+        // shadowOpacity: 0.25,
+        // shadowRadius: 7.2,
         elevation: 8,
     },
     historyButton: {
         backgroundColor: '#FFFFFF',
         width: '65%',
-        height: '75%',
+        height: '85%',
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 40,
+        marginTop: 25,
         marginRight: 20,
         left: 30,
         shadowColor: '#000',

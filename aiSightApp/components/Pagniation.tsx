@@ -17,7 +17,7 @@ const Pagination = ({ items, paginationIndex, scrollX }: Props) => {
                     key={index} 
                     style={[
                         styles.dot, 
-                        { backgroundColor: paginationIndex === index ? '#222' : '#aaa' }
+                        { backgroundColor: paginationIndex === index ? '#555555' : '#aaa' }
                     ]} 
                 />
             ))}
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         height: 12,
-        bottom: 60,
+        bottom: 55,
         justifyContent: 'center',
         alignItems: 'center',
     },

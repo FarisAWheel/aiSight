@@ -15,22 +15,30 @@ type Props = {
 const { width } = Dimensions.get('screen');
 
 const SliderItem = ({ item, index, scrollX, buttonText, navigation }: Props) => {
-    const rnAnimatedStyle = useAnimatedStyle(() => {
-        return {
-            transform: [
-                {
-                    translateX: interpolate(
-                        scrollX.value,
-                        [(index - 1) * width, index * width, (index + 1) * width],
-                        [-width * 0.25, 0, width * 0.25],
-                        Extrapolation.CLAMP,
-                    ),
-                },
-            ]
-        };
-    });
+    // const rnAnimatedStyle = useAnimatedStyle(() => {
+    //     return {
+    //         transform: [
+    //             {
+    //                 translateX: interpolate(
+    //                     scrollX.value,
+    //                     [(index - 1) * width, index * width, (index + 1) * width],
+    //                     [-width * 0.25, 0, width * 0.25],
+    //                     Extrapolation.CLAMP,
+    //                 ),
+    //             },
+    //             {
+    //                 scale: interpolate(
+    //                     scrollX.value,
+    //                     [(index - 1) * width, index * width, (index + 1) * width],
+    //                     [0.9, 1, 0.9],
+    //                     Extrapolation.CLAMP
+    //                 ),
+    //             },
+    //         ],
+    //     };
+    // });
     return (
-        <Animated.View style={[styles.itemContainer, rnAnimatedStyle]}>
+        <Animated.View style={[styles.itemContainer]}>
             <Image source={item.image} style={{
                 width: 332,
                 height: 236.97,
