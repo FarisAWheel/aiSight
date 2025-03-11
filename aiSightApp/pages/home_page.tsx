@@ -23,7 +23,7 @@ const HomePage = ({ navigation }: { navigation: any }) => {
                 {/* Top part */}
                 <View style={{ flex: 1.5, justifyContent: 'center', alignItems: 'center', left: 20, }}>
                     <View style={styles.topContainer}>
-                        <Image source={logoBg} style={styles.logo} />
+                        <Image source={require('../assets/logoBg.png')} style={styles.logo} />
                         <View style={styles.innerTop}>
                             <Text style={styles.topText}>Hi there, what can I do for you?</Text>
                             <View style={styles.line} />
@@ -67,7 +67,7 @@ const HomePage = ({ navigation }: { navigation: any }) => {
                             <TouchableOpacity style={styles.settingsButton} onPress={() => navigation.navigate('Bluetooth')}>
                                 <Text style={styles.ViewbuttonText}>Settings</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.historyButton} onPress={() => navigation.navigate('Bluetooth')}>
+                            <TouchableOpacity style={styles.historyButton} onPress={() => navigation.navigate('PeopleHistory')}>
                                 <Text style={styles.ViewbuttonText}>People History</Text>
                             </TouchableOpacity>
                         </View>
