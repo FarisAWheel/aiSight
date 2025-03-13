@@ -17,17 +17,11 @@ class AdvertisementHandler: public BLEServerCallbacks {
     void onConnect(BLEServer* pServer) {
       deviceConnected = true;
       Serial.println("Device connected, terminating advertising");
-      pServer->getAdvertising()->stop();
+      pServer->stop();
     };
-
-    void onDisconnect(BLEServer* pServer) {
-      deviceConnected = false;
-      Serial.println("Device disconnecing, restarting advertising");
-      pServer->getAdvertising()->start();
-    }
 };
 
-// Initalizes the BLE Server, Service, Characteristics with password given in paraemeter
+// Initalizes the BLE Server, Service, & Characteristics with password given in paraemeter
 void initBLE(String password) {
   BLEDevice::init("aiSight");
   pServer = BLEDevice::createServer();
@@ -53,4 +47,5 @@ void initBLE(String password) {
   pService->start();
   pServer->getAdvertising()->start();
   Serial.println("Waiting for a client connection...");
+
 }
