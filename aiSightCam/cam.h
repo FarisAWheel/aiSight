@@ -1,5 +1,5 @@
-#ifndef CAMHANDLER_H
-#define CAMHANDLER_H
+#ifndef CAM_H
+#define CAM_H
 
 #include "esp_camera.h"
 #include <WiFi.h>
