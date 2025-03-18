@@ -70,30 +70,37 @@ function useBLE(): BLEApi {
   };
 
   const scanForPeripherals = () => {
-    console.log("scanning for peripherals");
-    bleManager.startDeviceScan(
-      null,
-      { scanMode: 2, legacyScan: false },
-      (error, device) => {
-        console.log("device scanned: ", device);
-        if (error) {
-          console.error(error);
-          return;
-        }
-
-        if (device && device.name?.includes("aiSight")) {
-          setAllDevices((prev) => {
-            if (prev.find((d) => d.id === device.id)) {
-              return prev;
-            }
-            return [...prev, device];
-          });
-        }
+    if (!ExpoDevice.isDevice) {
+      setTimeout(() => {
+        setAllDevices([
+          { id: "12345", name: "aiSight glasses" },
+          { id: "6789", name: "aiSight glasses 2" },
+        ] as Device[]);
+      }, 2000);
+      return;
+    }
+    bleManager.startDeviceScan(null, { scanMode: 2 }, (error, device) => {
+      if (error) {
+        console.error(error);
+        return;
       }
-    );
+
+      if (device && device.name?.includes("aiSight")) {
+        setAllDevices((prev) => {
+          if (prev.find((d) => d.id === device.id)) {
+            return prev;
+          }
+          return [...prev, device];
+        });
+      }
+    });
   };
 
   const connectToDevice = async (device: Device) => {
+    if (!ExpoDevice.isDevice) {
+      setConnectedDevice(device);
+      return;
+    }
     const deviceConnection = await bleManager.connectToDevice(device.id);
     setConnectedDevice(deviceConnection);
     await deviceConnection.discoverAllServicesAndCharacteristics();

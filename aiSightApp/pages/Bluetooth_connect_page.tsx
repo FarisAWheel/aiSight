@@ -1,29 +1,13 @@
 import React from "react";
 import GradientBackground from "../components/GradientBackground";
 import LeftBackArrowButton from "../components/LeftBackArrowButton";
-import GlassesStream from "../components/GlassesStream";
-import { BleManager } from "react-native-ble-plx";
-import { useEffect, useState } from "react";
-import {
-  Modal,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
-import { NetworkInfo } from "react-native-network-info";
+import { useEffect } from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import useBLE from "../hooks/useBLE";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-
-const SERVICE_UUID = "7744f639-d553-4757-9868-404fe754ea34";
-const CHARACTERISTIC_UUID = "bf16bfa0-4a61-47a8-9d4f-02c27947d36a";
+import { Ionicons } from "@expo/vector-icons";
 
 const BluetoothPage = ({ navigation }: { navigation: any }) => {
-  const [ssid, setSsid] = useState("");
-  const [password, setPassword] = useState("");
-  const [networkDetectedModalShown, showNetworkDetectedModal] = useState(false);
-  const [hotspotModalShown, showHotspotModal] = useState(false);
   const {
     requestPermissions,
     scanForPeripherals,
@@ -51,18 +35,6 @@ const BluetoothPage = ({ navigation }: { navigation: any }) => {
     }
   });
 
-  useEffect(() => {
-    console.log(allDevices);
-    console.log(connectedDevice);
-  });
-
-  useEffect(() => {
-    if (ssid && password) {
-      console.log("ssid: ", ssid);
-      console.log("password: ", password);
-    }
-  });
-
   return (
     <GradientBackground>
       <LeftBackArrowButton onPress={() => navigation.navigate("Welcome")} />
@@ -72,14 +44,39 @@ const BluetoothPage = ({ navigation }: { navigation: any }) => {
           <Text style={styles.mainText}>Searching for a device...</Text>
         </View>
       )}
-      {connectedDevice && (
-        <View>
+      {allDevices.length > 1 && !connectedDevice && (
+        <View style={styles.centeredView}>
           <MaterialCommunityIcons name="glasses" size={124} color="white" />
-          <View style={styles.inlineView}>
-            <Text style={styles.mainText}>Connected</Text>
-            <MaterialCommunityIcons name="check" size={24} color="white" />
+          <Text style={styles.mainText}>Multiple devices found</Text>
+          <View style={styles.buttonsContainer}>
+            {allDevices.map((device) => (
+              <Pressable
+                style={styles.whiteButton}
+                key={device.id}
+                onPress={() => connectToDevice(device)}
+              >
+                <Text style={styles.textCenter}>{device.name}</Text>
+              </Pressable>
+            ))}
           </View>
         </View>
+      )}
+      {connectedDevice && (
+        <>
+          <View>
+            <MaterialCommunityIcons name="glasses" size={124} color="white" />
+            <View style={styles.inlineView}>
+              <Text style={styles.mainText}>Connected</Text>
+              <MaterialCommunityIcons name="check" size={24} color="white" />
+            </View>
+          </View>
+          <Pressable
+            style={styles.nextButton}
+            onPress={() => navigation.navigate("Home")}
+          >
+            <Ionicons name="arrow-forward" size={30} color="black" />
+          </Pressable>
+        </>
       )}
     </GradientBackground>
   );
@@ -95,11 +92,42 @@ const styles = StyleSheet.create({
   mainText: {
     color: "white",
     fontSize: 20,
+    marginBottom: 16,
   },
 
   inlineView: {
     display: "flex",
-    gap: "4px",
+    flexDirection: "row",
+    gap: 4,
+  },
+
+  whiteButton: {
+    backgroundColor: "white",
+    padding: 10,
+    borderRadius: 20,
+  },
+
+  buttonsContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 8,
+  },
+
+  nextButton: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    bottom: 70,
+    right: 30,
+    fontWeight: "bold",
+  },
+
+  textCenter: {
+    textAlign: "center",
   },
 });
 
