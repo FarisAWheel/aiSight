@@ -1,6 +1,6 @@
 import React from 'react'
 import GradientBackground from '../components/GradientBackground'
-import { Text, View, TouchableOpacity, StyleSheet, Button, FlatList} from 'react-native'
+import { Text, View, TouchableOpacity, StyleSheet, Button, FlatList, Image} from 'react-native'
 import LeftBackArrowButton from '../components/LeftBackArrowButton'
 import RightArrowButton from '../components/RightArrowButton'
 
@@ -38,6 +38,15 @@ const HistoryPage = ({navigation}: {navigation:any}) =>{
                                 <View style={styles.listItem}>
                                     <View style={styles.bulletBox} />
                                     <Text style={styles.item}>{item.key}</Text>
+                                    {/* The three buttons on the side for menu */}
+                                    <View style={{flexDirection: 'row', justifyContent: 'space-between', position: 'absolute', right: 20, width: '20%'}}>
+                                        <TouchableOpacity onPress={() => navigation.navigate('Bluetooth')}>
+                                            <Image
+                                                source={require('../assets/threeDots.png')}
+                                                style={{width: 20, height: 20}}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
                             )} 
                             />
