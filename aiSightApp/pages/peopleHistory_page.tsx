@@ -9,7 +9,11 @@ import {
     MenuOptions,
     MenuOption,
     MenuTrigger,
+    renderers,
   } from 'react-native-popup-menu'
+import Icon from 'react-native-vector-icons/FontAwesome'
+
+const { Popover } = renderers;
 
 const HistoryPage = ({navigation}: {navigation:any}) =>{
     return( 
@@ -47,14 +51,15 @@ const HistoryPage = ({navigation}: {navigation:any}) =>{
                                         <View style={styles.bulletBox} />
                                         <Text style={styles.item}>{item.key}</Text>
                                         {/* The three buttons on the side for menu */}
-                                        <View style={{flexDirection: 'row', justifyContent: 'space-between', position: 'absolute', right: 20, width: '20%'}}>
-                                            {/* <TouchableOpacity onPress={() => navigation.navigate('Bluetooth')}>
-                                                <Image
-                                                    source={require('../assets/threeDots.png')}
-                                                    style={{width: 20, height: 20}}
-                                                />
-                                            </TouchableOpacity> */}
-                                            <Menu onSelect={value => alert(`Are you sure you want to delete ${value}?`)}>
+                                        <View style={{flexDirection: 'row', justifyContent: 'space-between', position: 'absolute', right: 20, width: '22%'}}>
+                                            <Menu 
+                                                renderer={Popover}
+                                                rendererProps={{
+                                                    placement: 'bottom', // Position the menu below the trigger
+                                                    anchorStyle: { backgroundColor: 'white' }, // Customize the anchor
+                                                }}
+                                                onSelect={value => alert(`Are you sure you want to delete ${value}?`)}
+                                                >
                                                 <MenuTrigger>
                                                     <Image
                                                             source={require('../assets/threeDots.png')}
@@ -62,9 +67,9 @@ const HistoryPage = ({navigation}: {navigation:any}) =>{
                                                         />
                                                 </MenuTrigger>
                                                 <MenuOptions>
-                                                    <MenuOption value={1} text='Edit' />
-                                                    <CheckedOption value={2} text='Delete'>
-                                                    </CheckedOption>
+                                                    <EditOption value={item.key} text='Edit name' />
+                                                    <DeleteOption value={item.key} text='Delete'>
+                                                    </DeleteOption>
                                                 </MenuOptions>
                                             </Menu>
                                         </View>
@@ -79,8 +84,21 @@ const HistoryPage = ({navigation}: {navigation:any}) =>{
     )
 }
 
-const CheckedOption: React.FC<{ value: number; text: string }> = (props) => (
-    <MenuOption value={props.value} text={'\u1F5D1 ' + props.text} />
+const DeleteOption: React.FC<{ value: string; text: string }> = (props) => (
+    <MenuOption value={props.value}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Icon name="trash" size={16} color="#F17070" style={{ marginRight: 8 }} />
+            <Text>{props.text}</Text>
+        </View>
+    </MenuOption>
+);
+const EditOption: React.FC<{ value: string; text: string }> = (props) => (
+    <MenuOption value={props.value}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Icon name="pencil" size={16} color="#000" style={{ marginRight: 8 }} />
+            <Text>{props.text}</Text>
+        </View>
+    </MenuOption>
 );
 
 const styles = StyleSheet.create({
