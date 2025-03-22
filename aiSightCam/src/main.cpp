@@ -1,7 +1,6 @@
-#include <BLE.h>
-#include <cam.h>
-using namespace std;
-
+#include <Arduino.h>
+#include "BLE.h"
+#include "cam.h"
 
 /* OUTLINE
   On start, the ESP32 will advertise Bluetooth to make it discoverable to nearby devices
@@ -15,11 +14,18 @@ using namespace std;
 */
 
 void setup() {
-  // randomly generate a password to send to initBLE
-  String password = "";
-  initBLE(password);
-  beginStreaming();
-  
+  Serial.begin(74880);
+  Serial.println("starting program");
+  string password = initBLE();
+  char* passBuffer = new char[password.length() + 1];
+  strcpy(passBuffer, password.c_str());
+  Serial.println("bluetooth initalized");
+  while(!passwordSent) {delay(10);} // wait for the password to be sent before doing the following
+  disconnectBLE();
+  Serial.println("Finished sending password!");
+  delay(5000);
+  beginStreaming(passBuffer);
+
 }
 
 void loop() {

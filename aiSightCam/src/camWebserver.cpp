@@ -1,8 +1,14 @@
-#include "camHandler.h"
+#include <Arduino.h>
+#include "esp_camera.h"
+#include <WiFi.h>
+#include <WebServer.h>
+
+#define CAMERA_MODEL_AI_THINKER
+#include "camera_pins.h"
+
 using namespace std;
  
-const char* ssid = "ESP32-AP-TEST";
-const char* password = "test12345";
+const char* ssid = "aiSightESP32";
  
 WebServer server(80);
  
@@ -65,10 +71,10 @@ void startCameraServer() {
   server.begin();
 }
  
-void beginStreaming() {
-  Serial.begin(115200);
-  Serial.setDebugOutput(true);
-  Serial.println();
+void beginStreaming(char* password) {
+  // Serial.begin(115200);
+  // Serial.setDebugOutput(true);
+  // Serial.println();
  
   camera_config_t config;
   config.ledc_channel = LEDC_CHANNEL_0;
@@ -85,8 +91,8 @@ void beginStreaming() {
   config.pin_pclk = PCLK_GPIO_NUM;
   config.pin_vsync = VSYNC_GPIO_NUM;
   config.pin_href = HREF_GPIO_NUM;
-  config.pin_sscb_sda = SIOD_GPIO_NUM;
-  config.pin_sscb_scl = SIOC_GPIO_NUM;
+  config.pin_sccb_sda = SIOD_GPIO_NUM;
+  config.pin_sccb_scl = SIOC_GPIO_NUM;
   config.pin_pwdn = PWDN_GPIO_NUM;
   config.pin_reset = RESET_GPIO_NUM;
   config.xclk_freq_hz = 20000000;
