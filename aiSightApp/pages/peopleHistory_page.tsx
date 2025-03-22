@@ -3,59 +3,85 @@ import GradientBackground from '../components/GradientBackground'
 import { Text, View, TouchableOpacity, StyleSheet, Button, FlatList, Image} from 'react-native'
 import LeftBackArrowButton from '../components/LeftBackArrowButton'
 import RightArrowButton from '../components/RightArrowButton'
+import { MenuProvider } from 'react-native-popup-menu';
+import {
+    Menu,
+    MenuOptions,
+    MenuOption,
+    MenuTrigger,
+  } from 'react-native-popup-menu'
 
 const HistoryPage = ({navigation}: {navigation:any}) =>{
     return( 
-        <GradientBackground>
-            <LeftBackArrowButton onPress={() => navigation.navigate('Home')}/>
-            <View style={styles.boxShadow}>
-                <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center', left: 10}}>
-                    <Text style={styles.text}>People History</Text>
-                    <View style = {{flexDirection: 'row', width: '100%', height: '90%', top: 20, left: 30}}>
-                        <FlatList
-                        // hardcoded data for now
-                            data={[
-                            {key: 'Faris'},
-                            {key: 'Thomas'},
-                            {key: 'Kat'},
-                            {key: 'Jeff'},
-                            {key: 'Isaiah'},
-                            {key: 'Emilio'},
-                            {key: 'Faris'},
-                            {key: 'Thomas'},
-                            {key: 'Kat'},
-                            {key: 'Jeff'},
-                            {key: 'Isaiah'},
-                            {key: 'Emilio'},
-                            {key: 'Faris'},
-                            {key: 'Thomas'},
-                            {key: 'Kat'},
-                            {key: 'Jeff'},
-                            {key: 'Isaiah'},
-                            {key: 'Emilio'},
-                            ]}
-                            renderItem={({ item }) => (
-                                <View style={styles.listItem}>
-                                    <View style={styles.bulletBox} />
-                                    <Text style={styles.item}>{item.key}</Text>
-                                    {/* The three buttons on the side for menu */}
-                                    <View style={{flexDirection: 'row', justifyContent: 'space-between', position: 'absolute', right: 20, width: '20%'}}>
-                                        <TouchableOpacity onPress={() => navigation.navigate('Bluetooth')}>
-                                            <Image
-                                                source={require('../assets/threeDots.png')}
-                                                style={{width: 20, height: 20}}
-                                            />
-                                        </TouchableOpacity>
+        <MenuProvider>
+            <GradientBackground>
+                <LeftBackArrowButton onPress={() => navigation.navigate('Home')}/>
+                <View style={styles.boxShadow}>
+                    <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center', left: 10}}>
+                        <Text style={styles.text}>People History</Text>
+                        <View style = {{flexDirection: 'row', width: '100%', height: '90%', top: 20, left: 30}}>
+                            <FlatList
+                            // hardcoded data for now
+                                data={[
+                                {key: 'Faris'},
+                                {key: 'Thomas'},
+                                {key: 'Kat'},
+                                {key: 'Jeff'},
+                                {key: 'Isaiah'},
+                                {key: 'Emilio'},
+                                {key: 'Faris'},
+                                {key: 'Thomas'},
+                                {key: 'Kat'},
+                                {key: 'Jeff'},
+                                {key: 'Isaiah'},
+                                {key: 'Emilio'},
+                                {key: 'Faris'},
+                                {key: 'Thomas'},
+                                {key: 'Kat'},
+                                {key: 'Jeff'},
+                                {key: 'Isaiah'},
+                                {key: 'Emilio'},
+                                ]}
+                                renderItem={({ item }) => (
+                                    <View style={styles.listItem}>
+                                        <View style={styles.bulletBox} />
+                                        <Text style={styles.item}>{item.key}</Text>
+                                        {/* The three buttons on the side for menu */}
+                                        <View style={{flexDirection: 'row', justifyContent: 'space-between', position: 'absolute', right: 20, width: '20%'}}>
+                                            {/* <TouchableOpacity onPress={() => navigation.navigate('Bluetooth')}>
+                                                <Image
+                                                    source={require('../assets/threeDots.png')}
+                                                    style={{width: 20, height: 20}}
+                                                />
+                                            </TouchableOpacity> */}
+                                            <Menu onSelect={value => alert(`Are you sure you want to delete ${value}?`)}>
+                                                <MenuTrigger>
+                                                    <Image
+                                                            source={require('../assets/threeDots.png')}
+                                                            style={{width: 20, height: 20}}
+                                                        />
+                                                </MenuTrigger>
+                                                <MenuOptions>
+                                                    <MenuOption value={1} text='Edit' />
+                                                    <CheckedOption value={2} text='Delete'>
+                                                    </CheckedOption>
+                                                </MenuOptions>
+                                            </Menu>
+                                        </View>
                                     </View>
-                                </View>
-                            )} 
-                            />
-                        </View>
+                                )} 
+                                />
+                            </View>
+                    </View>
                 </View>
-            </View>
-        </GradientBackground>
+            </GradientBackground>
+        </MenuProvider>
     )
 }
+
+const CheckedOption: React.FC<{ value: number; text: string }> = (props) => (
+    <MenuOption value={props.value} text={'\u1F5D1 ' + props.text} />
+);
 
 const styles = StyleSheet.create({
     boxShadow: {
