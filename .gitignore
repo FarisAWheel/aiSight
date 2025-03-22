@@ -4,6 +4,3 @@ venv
 
 # local env files
 .env*.local
-
-# ESP-IDF
-.vscode
