@@ -9,7 +9,14 @@ interface BLEApi {
   allDevices: Device[];
   connectToDevice(device: Device): void;
   connectedDevice: Device | null;
+  retrieveWebserverCredentials(): Promise<{ ssid: string; password: string }>;
 }
+
+const SERVICE_UUID = "bd2ffd83-7385-440c-880d-b20f78825585";
+const WEBSERVER_SSID_CHARACTERISTIC_UUID =
+  "5629f669-08d5-43b6-a2f6-f69d249f628b";
+const WEBSERVER_PASSWORD_CHARACTERISTIC_UUID =
+  "f6e2e6c0-c178-4b1d-8c91-d1d3bc2617cb";
 
 function useBLE(): BLEApi {
   const bleManager = useMemo(() => new BleManager(), []);
@@ -79,21 +86,16 @@ function useBLE(): BLEApi {
       }, 2000);
       return;
     }
-    bleManager.startDeviceScan(null, { scanMode: 2 }, (error, device) => {
-      if (error) {
-        console.error(error);
-        return;
+    bleManager.startDeviceScan(
+      [SERVICE_UUID],
+      { scanMode: 2 },
+      (error, _device) => {
+        if (error) {
+          console.error(error);
+          return;
+        }
       }
-
-      if (device && device.name?.includes("aiSight")) {
-        setAllDevices((prev) => {
-          if (prev.find((d) => d.id === device.id)) {
-            return prev;
-          }
-          return [...prev, device];
-        });
-      }
-    });
+    );
   };
 
   const connectToDevice = async (device: Device) => {
@@ -107,12 +109,39 @@ function useBLE(): BLEApi {
     bleManager.stopDeviceScan();
   };
 
+  const retrieveWebserverCredentials = async () => {
+    if (!connectedDevice) {
+      throw new Error("No connected device");
+    }
+    const ssidCharacteristic =
+      await connectedDevice.readCharacteristicForService(
+        SERVICE_UUID,
+        WEBSERVER_SSID_CHARACTERISTIC_UUID
+      );
+    if (!ssidCharacteristic.value) {
+      throw new Error("Could not read SSID characteristic value");
+    }
+    const passwordCharacteristic =
+      await connectedDevice.readCharacteristicForService(
+        SERVICE_UUID,
+        WEBSERVER_PASSWORD_CHARACTERISTIC_UUID
+      );
+    if (!passwordCharacteristic.value) {
+      throw new Error("Could not read password characteristic value");
+    }
+    return {
+      ssid: ssidCharacteristic.value,
+      password: passwordCharacteristic.value,
+    };
+  };
+
   return {
     scanForPeripherals,
     requestPermissions,
     allDevices,
     connectToDevice,
     connectedDevice,
+    retrieveWebserverCredentials,
   };
 }
 
