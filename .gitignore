@@ -12,5 +12,3 @@ venv
 .vscode
 
 .DS_Store
-# ESP-IDF
-.vscode
