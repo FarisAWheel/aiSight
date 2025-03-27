@@ -5,4 +5,12 @@ venv
 # local env files
 .env*.local
 
+
 .DS_Store
+
+# ESP-IDF
+.vscode
+
+.DS_Store
+# ESP-IDF
+.vscode
