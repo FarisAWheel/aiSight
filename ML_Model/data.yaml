@@ -1,0 +1,14 @@
+path : C:/Users/earis/OneDrive/Desktop/hand_gestures_dataset
+train: C:\Users\earis\OneDrive\Desktop\hand_gestures_dataset\test\images
+val: C:\Users\earis\OneDrive\Desktop\hand_gestures_dataset\valid\images
+test: C:\Users\earis\OneDrive\Desktop\hand_gestures_dataset\test\images
+
+nc: 26
+names: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+
+roboflow:
+  workspace: yolo-handgesture-skripsi
+  project: hand-gestures-yolov8-du7fk
+  version: 3
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/yolo-handgesture-skripsi/hand-gestures-yolov8-du7fk/dataset/3
