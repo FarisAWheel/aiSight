@@ -3,6 +3,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, Text, View } from 'react-native';
 import WelcomePage from './pages/welcome_page';
 import BluetoothPage from './pages/Bluetooth_connect_page';
+import HomePage from './pages/home_page';
+import HistoryPage from './pages/peopleHistory_page';
 
 const Stack = createStackNavigator();
 
@@ -12,6 +14,8 @@ export default function App() {
             <Stack.Navigator initialRouteName="Welcome" screenOptions={{headerShown: false}}>
                 <Stack.Screen name="Welcome" component={WelcomePage} />
                 <Stack.Screen name="Bluetooth" component={BluetoothPage} />
+                <Stack.Screen name="Home" component={HomePage} />
+                <Stack.Screen name="PeopleHistory" component={HistoryPage} />
             </Stack.Navigator>
         </NavigationContainer>
   );
