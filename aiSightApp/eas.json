@@ -1,0 +1,33 @@
+{
+    "build": {
+      "development": {
+        "developmentClient": true,
+        "distribution": "internal",
+        "android": {
+            "buildType": "apk",
+            "image": "latest"
+        }
+      },
+      "preview": {
+        "android": {
+          "buildType": "apk",
+          "image": "latest"
+        },
+        "ios": {
+          "image": "latest"
+        }
+      },
+      "production": {
+        "autoIncrement": true,
+        "android": {
+          "image": "latest"
+        },
+        "ios": {
+          "image": "latest"
+        }
+      }
+    },
+    "cli": {
+      "appVersionSource": "remote"
+    }
+  }

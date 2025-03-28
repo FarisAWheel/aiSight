@@ -28,6 +28,11 @@
     },
     "plugins": [
       "onnxruntime-react-native"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "3eb46b12-1a27-41fc-a3f9-138a861b35dc"
+      }
+    }
   }
 }
