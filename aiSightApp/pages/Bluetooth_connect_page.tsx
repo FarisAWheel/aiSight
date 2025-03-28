@@ -72,7 +72,7 @@ const BluetoothPage = ({ navigation }: { navigation: any }) => {
           </View>
           <Pressable
             style={styles.nextButton}
-            onPress={() => navigation.navigate("Welcome")} // when home is implemented, direct there
+            onPress={() => navigation.navigate("Home")}
           >
             <Ionicons name="arrow-forward" size={30} color="black" />
           </Pressable>
