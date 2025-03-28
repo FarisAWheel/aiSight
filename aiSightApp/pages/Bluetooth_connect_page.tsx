@@ -14,6 +14,7 @@ const BluetoothPage = ({ navigation }: { navigation: any }) => {
     allDevices,
     connectToDevice,
     connectedDevice,
+    retrieveWebserverCredentials,
   } = useBLE();
 
   useEffect(() => {
@@ -30,8 +31,15 @@ const BluetoothPage = ({ navigation }: { navigation: any }) => {
   }, []);
 
   useEffect(() => {
+    async function getCredentials() {
+      const credentials = await retrieveWebserverCredentials();
+      console.log(credentials.ssid);
+      console.log(credentials.password);
+    }
+
     if (allDevices.length === 1) {
       connectToDevice(allDevices[0]);
+      getCredentials();
     }
   });
 
