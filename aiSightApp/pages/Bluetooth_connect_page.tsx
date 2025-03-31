@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import GradientBackground from "../components/GradientBackground";
 import LeftBackArrowButton from "../components/LeftBackArrowButton";
-import { useEffect } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import useBLE from "../hooks/useBLE";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -15,33 +14,47 @@ const BluetoothPage = ({ navigation }: { navigation: any }) => {
     connectToDevice,
     connectedDevice,
     retrieveWebserverCredentials,
+    bleManager,
   } = useBLE();
 
   useEffect(() => {
-    async function scan() {
+    const setupBluetooth = async () => {
       const permissionsGranted = await requestPermissions();
-      if (permissionsGranted) {
-        scanForPeripherals();
-      } else {
+      if (!permissionsGranted) {
         console.error("Permissions not granted");
+        return;
+      }
+//EDITED: make sure the state is checked before scanning for devices
+      const subscription = bleManager.onStateChange((state) => {
+        if (state === "PoweredOn") {
+          console.log("BLE state: PoweredOn - starting scan");
+          scanForPeripherals();
+          subscription.remove();
+        } else {
+          console.warn("BLE state:", state);
+        }
+      }, true);
+    };
+
+    setupBluetooth();
+  }, []);
+
+  //EDITED: added extra logging to check if the devices are being scanned
+  useEffect(() => {
+    async function getCredentials() {
+      try {
+        const credentials = await retrieveWebserverCredentials();
+        console.log("SSID:", credentials.ssid);
+        console.log("Password:", credentials.password);
+      } catch (e) {
+        console.error("Failed to get credentials", e);
       }
     }
 
-    scan();
-  }, []);
-
-  useEffect(() => {
-    async function getCredentials() {
-      const credentials = await retrieveWebserverCredentials();
-      console.log(credentials.ssid);
-      console.log(credentials.password);
+    if (allDevices.length === 1 && !connectedDevice) {
+      connectToDevice(allDevices[0]).then(getCredentials);
     }
-
-    if (allDevices.length === 1) {
-      connectToDevice(allDevices[0]);
-      getCredentials();
-    }
-  });
+  }, [allDevices]);
 
   return (
     <GradientBackground>
@@ -52,18 +65,20 @@ const BluetoothPage = ({ navigation }: { navigation: any }) => {
           <Text style={styles.mainText}>Searching for a device...</Text>
         </View>
       )}
-      {allDevices.length > 1 && !connectedDevice && (
+      {/* EDITED: made the length to 0 to show all devices */}
+      {allDevices.length > 0 && !connectedDevice && (
         <View style={styles.centeredView}>
           <MaterialCommunityIcons name="glasses" size={124} color="white" />
           <Text style={styles.mainText}>Multiple devices found</Text>
           <View style={styles.buttonsContainer}>
-            {allDevices.map((device) => (
+            {allDevices.slice(0,10).map((device) => (
               <Pressable
                 style={styles.whiteButton}
                 key={device.id}
                 onPress={() => connectToDevice(device)}
               >
-                <Text style={styles.textCenter}>{device.name}</Text>
+                {/* EDITED: if a device has no name it will show "Unnamed device" */}
+                <Text style={styles.textCenter}>{device.name || "Unnamed device"}</Text>
               </Pressable>
             ))}
           </View>
@@ -96,31 +111,24 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-
   mainText: {
     color: "white",
     fontSize: 20,
     marginBottom: 16,
   },
-
   inlineView: {
-    display: "flex",
     flexDirection: "row",
     gap: 4,
   },
-
   whiteButton: {
     backgroundColor: "white",
     padding: 10,
     borderRadius: 20,
   },
-
   buttonsContainer: {
-    display: "flex",
     flexDirection: "column",
     gap: 8,
   },
-
   nextButton: {
     width: 60,
     height: 60,
@@ -133,7 +141,6 @@ const styles = StyleSheet.create({
     right: 30,
     fontWeight: "bold",
   },
-
   textCenter: {
     textAlign: "center",
   },
