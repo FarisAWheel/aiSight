@@ -61,10 +61,7 @@ string initBLE() {
   pPassword->setCallbacks(new Callbacks(pServer));
 
   // Begin advertising
-  BLEAdvertisementData pAdvdata;
-  pAdvdata.setName("aiSight Camera");
-  pAdvdata.setCompleteServices(pService->getUUID());
-  pAdvertiser->setAdvertisementData(pAdvdata);
+  pAdvertiser->addServiceUUID(pService->getUUID());
   pAdvertiser->start();
   Serial.println("Enabling BLE");
 
