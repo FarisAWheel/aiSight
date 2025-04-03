@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
-import { BleManager, Device } from "react-native-ble-plx";
+import { BleManager, Device, Base64 } from "react-native-ble-plx";
 import { PermissionsAndroid, Platform } from "react-native";
 import * as ExpoDevice from "expo-device";
 
@@ -13,7 +13,7 @@ interface BLEApi {
   bleManager: BleManager; 
 }
 
-const SERVICE_UUID = "bd2ffd83-7385-440c-880d-b20f78825585";
+const SERVICE_UUID = ["bd2ffd83-7385-440c-880d-b20f78825585"];
 const WEBSERVER_SSID_CHARACTERISTIC_UUID =
   "5629f669-08d5-43b6-a2f6-f69d249f628b";
 const WEBSERVER_PASSWORD_CHARACTERISTIC_UUID =
@@ -77,7 +77,7 @@ function useBLE(): BLEApi {
   };
 
   const scanForPeripherals = () => {
-    if (!ExpoDevice.isDevice) {
+    if (!ExpoDevice.isDevice) { // if we are not in a physical device
       console.log("Mocking BLE devices (not a physical device)");
       setTimeout(() => {
         setAllDevices([
@@ -90,15 +90,20 @@ function useBLE(): BLEApi {
   
     console.log("Scanning for all nearby BLE devices...");
     //EDITED: Passed in null instead of UUID to scan for all devices
-    bleManager.startDeviceScan(null, null, (error, device) => {
+    bleManager.startDeviceScan(SERVICE_UUID, null, (error, device) => {
       if (error) {
         console.error("Scan error:", error);
         return;
       }
   
-      if (device && !allDevices.some(d => d.id === device.id)) {
-        console.log("Found device:", device.name || "Unnamed", "-", device.id);
-        setAllDevices((prev) => [...prev, device]);
+      if (device) {
+        setAllDevices((prevDevices) => {
+          if (prevDevices.some((d) => d.id === device.id)) {
+            return prevDevices;
+          }
+          console.log("Found device:", device.name || "Unnamed", "-", device.id);
+          return [...prevDevices, device];
+        });
       }
     });
   };
@@ -127,7 +132,7 @@ function useBLE(): BLEApi {
     }
 
     const ssidCharacteristic = await connectedDevice.readCharacteristicForService(
-      SERVICE_UUID,
+      SERVICE_UUID[0],
       WEBSERVER_SSID_CHARACTERISTIC_UUID
     );
     if (!ssidCharacteristic.value) {
@@ -135,15 +140,15 @@ function useBLE(): BLEApi {
     }
     const passwordCharacteristic =
       await connectedDevice.readCharacteristicForService(
-      SERVICE_UUID,
+      SERVICE_UUID[0],
       WEBSERVER_PASSWORD_CHARACTERISTIC_UUID
     );
     if (!passwordCharacteristic.value) {
       throw new Error("Could not read password characteristic value");
     }
     return {
-      ssid: ssidCharacteristic.value ?? "",
-      password: passwordCharacteristic.value ?? "",
+      ssid: atob(ssidCharacteristic.value),
+      password: atob(passwordCharacteristic.value),
     };
   };
 

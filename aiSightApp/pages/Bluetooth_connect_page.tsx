@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import GradientBackground from "../components/GradientBackground";
 import LeftBackArrowButton from "../components/LeftBackArrowButton";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import useBLE from "../hooks/useBLE";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { Ionicons } from "@expo/vector-icons";
+
 
 const BluetoothPage = ({ navigation }: { navigation: any }) => {
   const {
@@ -17,6 +18,8 @@ const BluetoothPage = ({ navigation }: { navigation: any }) => {
     bleManager,
   } = useBLE();
 
+  const [credentials, setCredentials] = useState<{ssid: string; password: string } | null>(null); 
+
   useEffect(() => {
     const setupBluetooth = async () => {
       const permissionsGranted = await requestPermissions();
@@ -24,7 +27,7 @@ const BluetoothPage = ({ navigation }: { navigation: any }) => {
         console.error("Permissions not granted");
         return;
       }
-//EDITED: make sure the state is checked before scanning for devices
+      //EDITED: make sure the state is checked before scanning for devices
       const subscription = bleManager.onStateChange((state) => {
         if (state === "PoweredOn") {
           console.log("BLE state: PoweredOn - starting scan");
@@ -39,22 +42,23 @@ const BluetoothPage = ({ navigation }: { navigation: any }) => {
     setupBluetooth();
   }, []);
 
-  //EDITED: added extra logging to check if the devices are being scanned
   useEffect(() => {
     async function getCredentials() {
       try {
-        const credentials = await retrieveWebserverCredentials();
-        console.log("SSID:", credentials.ssid);
-        console.log("Password:", credentials.password);
+        const retrievedCredentials = await retrieveWebserverCredentials();
+        setCredentials(retrievedCredentials);
+        console.log("SSID:", retrievedCredentials.ssid);
+        console.log("Password:", retrievedCredentials.password);
       } catch (e) {
         console.error("Failed to get credentials", e);
       }
     }
 
-    if (allDevices.length === 1 && !connectedDevice) {
-      connectToDevice(allDevices[0]).then(getCredentials);
+    if(connectedDevice){
+      getCredentials();
     }
-  }, [allDevices]);
+
+  }, [connectedDevice])
 
   return (
     <GradientBackground>
@@ -69,7 +73,7 @@ const BluetoothPage = ({ navigation }: { navigation: any }) => {
       {allDevices.length > 0 && !connectedDevice && (
         <View style={styles.centeredView}>
           <MaterialCommunityIcons name="glasses" size={124} color="white" />
-          <Text style={styles.mainText}>Multiple devices found</Text>
+          <Text style={styles.mainText}>Devices found</Text>
           <View style={styles.buttonsContainer}>
             {allDevices.slice(0,10).map((device) => (
               <Pressable
