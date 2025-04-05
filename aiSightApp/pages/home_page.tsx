@@ -21,7 +21,7 @@ const HomePage = ({ navigation }: { navigation: any }) => {
                 ]}
             >
                 {/* Top part */}
-                <View style={{ flex: 1.5, justifyContent: 'center', alignItems: 'center', left: 0, }}>
+                <View style={{ flex: 1.5, justifyContent: 'center', alignItems: 'center', left: 10, }}>
                     <View style={styles.topContainer}>
                         <Image source={logoBg} style={styles.logo} />
                         <View style={styles.innerTop}>

@@ -135,7 +135,7 @@ const HistoryPage = ({ navigation }: { navigation: any }) => {
                             value={newName}
                             onChangeText={setNewName}
                             placeholder="Enter new name"
-                            maxLength={15}
+                            maxLength={23}
                         />
                         <View style={styles.modalButtons}>
                             <Button title="Cancel" onPress={() => setIsEditing(false)} color={'#555555'}/>

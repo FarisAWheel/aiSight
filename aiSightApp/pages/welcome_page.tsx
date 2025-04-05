@@ -1,30 +1,41 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import  GradientBackground  from '../components/GradientBackground'
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+const bgImage = require('../assets/welcomeBg.png');
 
 //welcome page
 const WelcomePage = ({navigation}:{navigation:any}) => {
     return (
-        <GradientBackground>
+        <ImageBackground source={bgImage} style={styles.backgroundImage}>
                 <Text style={styles.helloText}>Hello,</Text>
-                <Text style={styles.welcomeText}>Welcome to AiSight</Text>
+                <Text style={styles.welcomeText}>Welcome to AiSight!</Text>
                 <View style={styles.line} />
 
             <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('Bluetooth')}}>
                 <Text style={styles.buttonText}>Get started</Text>
+                <Icon name="arrow-right" size={34} color="#9BB5DE" />
             </TouchableOpacity>
-        </GradientBackground>
+        </ImageBackground>
     );
 };
 
 const styles = StyleSheet.create({
+    backgroundImage: {
+        flex: 1,
+        resizeMode: 'cover',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     helloText: {
-        fontSize: 48,
+        fontSize: 58,
         fontStyle: 'italic',
         color: 'white',
+        fontWeight: 600,
     },
     welcomeText: {
-        fontSize: 24,
+        fontSize: 30,
         color: 'white',
         marginBottom: 20,
     },
@@ -32,13 +43,14 @@ const styles = StyleSheet.create({
         width: 150,
         height: 1,
         backgroundColor: 'white',
-        marginBottom: 30,
+        marginBottom: 60,
     },
     button: {
         flexDirection: 'row',
         backgroundColor: 'white',
-        paddingVertical: 15,
-        paddingHorizontal: 30,
+        marginTop: 0,
+        paddingVertical: 25,
+        paddingHorizontal: 40,
         borderRadius: 40,
         shadowColor: '#000',
         shadowOpacity: 0.2,
@@ -47,10 +59,9 @@ const styles = StyleSheet.create({
         elevation: 5, // For Android shadow
     },
     buttonText: {
-        fontSize: 18,
+        fontSize: 28,
         color: '#9BB5DE',
-        fontWeight: 'bold',
-        marginRight: 10,
+        marginRight: 25,
     }
 });
 
