@@ -18,7 +18,8 @@
           "bluetoothAlwaysPermission": "Allow ${PRODUCT_NAME} to connect to Bluetooth devices"
         }
       ],
-      "expo-router"
+      "expo-router",
+      "react-native-wifi-reborn"
     ],
     "newArchEnabled": true,
     "splash": {

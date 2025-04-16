@@ -4,3 +4,4 @@ venv
 
 # local env files
 .env*.local
+node_modules

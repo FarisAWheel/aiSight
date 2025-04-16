@@ -3,8 +3,10 @@ import GradientBackground from "../components/GradientBackground";
 import LeftBackArrowButton from "../components/LeftBackArrowButton";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import useBLE from "../hooks/useBLE";
+import connectToWifi from "../hooks/connectToWifi";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { Ionicons } from "@expo/vector-icons";
+
 
 
 const BluetoothPage = ({ navigation }: { navigation: any }) => {
@@ -54,8 +56,19 @@ const BluetoothPage = ({ navigation }: { navigation: any }) => {
       }
     }
 
-    if(connectedDevice){
-      getCredentials();
+    
+    
+
+    if (connectedDevice) {
+      try {
+        getCredentials();
+        if (credentials) {
+          console.log("TEST");
+          connectToWifi(credentials.ssid, credentials.password);
+        }
+      } catch (error) {
+      console.error("Error during WiFi connection process:", error);
+      }
     }
 
   }, [connectedDevice])
