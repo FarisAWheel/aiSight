@@ -5,6 +5,7 @@ import WelcomePage from './pages/welcome_page';
 import BluetoothPage from './pages/Bluetooth_connect_page';
 import HomePage from './pages/home_page';
 import HistoryPage from './pages/peopleHistory_page';
+import CameraPage from './pages/camera_Steam';
 
 const Stack = createStackNavigator();
 
@@ -16,6 +17,7 @@ export default function App() {
                 <Stack.Screen name="Bluetooth" component={BluetoothPage} />
                 <Stack.Screen name="Home" component={HomePage} />
                 <Stack.Screen name="PeopleHistory" component={HistoryPage} />
+                <Stack.Screen name="CameraFeed" component={CameraPage} />
             </Stack.Navigator>
         </NavigationContainer>
   );
