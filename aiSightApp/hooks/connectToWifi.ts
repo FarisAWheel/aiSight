@@ -57,14 +57,14 @@ async function connectToWifi(
                 }
                 
                 // Step 5: Force WiFi usage (with error handling)
-                console.log("[WiFi] Setting force WiFi usage...");
-                try {
-                    await WifiManager.forceWifiUsageWithOptions(true, { noInternet: true });
-                    console.log("[WiFi] Force WiFi usage set successfully");
-                } catch (e) {
-                    console.error("[WiFi] Error setting force WiFi usage:", e);
-                    // Continue anyway, as this might not be critical
-                }
+                // console.log("[WiFi] Setting force WiFi usage...");
+                // try {
+                //     await WifiManager.forceWifiUsageWithOptions(true, { noInternet: true });
+                //     console.log("[WiFi] Force WiFi usage set successfully");
+                // } catch (e) {
+                //     console.error("[WiFi] Error setting force WiFi usage:", e);
+                //     // Continue anyway, as this might not be critical
+                // }
                 
                 // Step 6: Attempt connection
                 console.log(`[WiFi] Now attempting to connect to ${ssid}...`);

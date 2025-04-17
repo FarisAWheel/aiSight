@@ -53,7 +53,7 @@ const HomePage = ({ navigation }: { navigation: any }) => {
                 {/* Bottom Portion */}
                 <View style={{ justifyContent: 'center', alignItems: 'center' }} />
                     <View style={{ height: '10%', width: '70%' }}>
-                        <TouchableOpacity onPress={() => navigation.navigate('Bluetooth')}>
+                        <TouchableOpacity onPress={() => navigation.navigate('CameraFeed')}>
                             <LinearGradient
                                 colors={['#BADFC0', '#9FD2F0']}
                                 style={styles.viewFeedButton}
@@ -64,7 +64,7 @@ const HomePage = ({ navigation }: { navigation: any }) => {
                             </LinearGradient>
                         </TouchableOpacity>
                         <View style={{ flexDirection: 'row' }}>
-                            <TouchableOpacity style={styles.settingsButton} onPress={() => navigation.navigate('Bluetooth')}>
+                            <TouchableOpacity style={styles.settingsButton} onPress={() => navigation.navigate('')}>
                                 <Text style={styles.ViewbuttonText}>Settings</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.historyButton} onPress={() => navigation.navigate('PeopleHistory')}>
