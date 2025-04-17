@@ -21,6 +21,7 @@ void setup() {
   char* passBuffer = new char[password.length() + 1];
   strcpy(passBuffer, password.c_str());
 
+
   Serial.println("bluetooth initalized");
   while(!passwordSent) {delay(10);} // wait for the password to be sent before doing the following
   delay(500);

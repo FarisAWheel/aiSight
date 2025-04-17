@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useCallback } from "react";
 import { BleManager, Device, Base64 } from "react-native-ble-plx";
 import { PermissionsAndroid, Platform } from "react-native";
 import * as ExpoDevice from "expo-device";
@@ -6,11 +6,13 @@ import * as ExpoDevice from "expo-device";
 interface BLEApi {
   requestPermissions(): Promise<boolean>;
   scanForPeripherals(): void;
+  stopScan(): void;  // Added stopScan method
   allDevices: Device[];
   connectToDevice(device: Device): Promise<void>;
   connectedDevice: Device | null;
   retrieveWebserverCredentials(): Promise<{ ssid: string; password: string }>;
   bleManager: BleManager; 
+  disconnectDevice(): void;
 }
 
 const SERVICE_UUID = ["bd2ffd83-7385-440c-880d-b20f78825585"];
@@ -108,6 +110,13 @@ function useBLE(): BLEApi {
     });
   };
   
+  // Implement the stopScan method
+  const stopScan = useCallback(() => {
+    if (ExpoDevice.isDevice) {
+      bleManager.stopDeviceScan();
+      console.log("Device scanning stopped");
+    }
+  }, [bleManager]);
 
   const connectToDevice = async (device: Device) => {
     if (!ExpoDevice.isDevice) {
@@ -122,7 +131,7 @@ function useBLE(): BLEApi {
       setConnectedDevice(connection);
       console.log("Connected to", connection.name);
     } catch (e) {
-      console.error("Connection error", e);
+      console.error("Connection error PROB INTNETIONAL DONT DEBUG", e);
     }
   };
 
@@ -152,14 +161,20 @@ function useBLE(): BLEApi {
     };
   };
 
+  const disconnectDevice = useCallback(() => {
+    setConnectedDevice(null);
+  }, []);
+
   return {
     scanForPeripherals,
+    stopScan,  // Added stopScan method to the return object
     requestPermissions,
     allDevices,
     connectToDevice,
     connectedDevice,
     retrieveWebserverCredentials,
     bleManager,
+    disconnectDevice,
   };
 }
 
