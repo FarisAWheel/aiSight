@@ -15,9 +15,9 @@ export const ImageSlider: ImageSliderType[] = [
         buttonType: 'Remember a person',
     },
     {
-        title: 'sybau...',
-        image: require('../assets/testImage.png'),
+        title: 'Further hand gestures to be implemented',
+        image: require('../assets/toBeImplementedScreen.png'),
         description: 'shh quiet dog',
-        buttonType: 'Bakaaaa',
+        buttonType: 'Test feature',
     },
 ];

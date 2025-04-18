@@ -50,12 +50,12 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 5 },
     shadowRadius: 10,
     elevation: 5, // For Android shadow
+    marginTop:20,
   },
   buttonText: {
     fontSize: 18,
     color: "#9BB5DE",
     fontWeight: "bold",
-    marginRight: 10,
   },
 });
 

@@ -7,6 +7,7 @@ import * as FileSystem from 'expo-file-system';
 import { loadModel, runModel } from '../utils/onnxModel';
 import { generateDescription } from '../utils/openAIClient'
 import { captureRef } from 'react-native-view-shot';
+import LinearGradient from 'react-native-linear-gradient';
 
 // Import the types locally since we'll use the implementations from onnxModel.ts
 type Tensor = {
@@ -279,7 +280,7 @@ const styles = StyleSheet.create({
   captureContainer: {
     width: Dimensions.get('window').width - 20,
     height: 300,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#BADFC0',
   },
   stream: {
     flex: 1,

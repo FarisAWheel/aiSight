@@ -49,7 +49,7 @@ const SettingsPage = ({ navigation }: { navigation: any }) => {
   return (
     <>
       <GradientBackground style={styles.pagePadding}>
-        <LeftBackArrowButton onPress={() => navigation.navigate("Home")} />
+          <LeftBackArrowButton onPress={() => navigation.navigate("Home")} />
         <View style={styles.background}>
           <View style={styles.titleContainer}>
             <Feather name="settings" size={20} color="black" />
@@ -72,7 +72,7 @@ const SettingsPage = ({ navigation }: { navigation: any }) => {
               actionIcon={
                 <Feather name="chevron-right" size={18} color="#A7A7A7" />
               }
-              onPress={() => navigation.navigate("ObjectHistory")}
+              onPress={() => navigation.navigate("PeopleHistory")}
             />
             <View style={styles.separator} />
             <SettingButton
@@ -190,6 +190,7 @@ const styles = StyleSheet.create({
     paddingVertical: 51,
     borderRadius: 54,
     width: "100%",
+    marginTop: 60,
   },
 
   sectionHeading: {
