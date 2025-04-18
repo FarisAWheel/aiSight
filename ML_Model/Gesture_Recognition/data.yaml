@@ -1,0 +1,15 @@
+# Path to the dataset (can be relative to your training script)
+path: C:\Users\earis\OneDrive\Desktop\GIT Rep\aiSight\ML_Model\Gesture_Recognition\hndgestures  
+
+# Relative paths (from `path`) to your image folders
+train: images/train  
+val: images/test  
+
+# (Optional) if you have a separate test set
+# test: hndgestures/images/test  
+
+# Number of object classes
+nc: 4
+
+# Class names in order of their numeric ID (0, 1, …)
+names: ['Capture', 'Scene Description', 'Text to Speech', 'None']
