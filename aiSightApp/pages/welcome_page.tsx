@@ -18,14 +18,6 @@ const WelcomePage = ({navigation}:{navigation:any}) => {
       >
         <Text style={styles.buttonText}>Get started</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          navigation.navigate("Help");
-        }}
-      >
-        <Text style={styles.buttonText}>Help</Text>
-      </TouchableOpacity>
     </GradientBackground>
   );
 };

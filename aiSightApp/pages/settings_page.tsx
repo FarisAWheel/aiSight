@@ -63,7 +63,7 @@ const SettingsPage = ({ navigation }: { navigation: any }) => {
               actionIcon={
                 <Feather name="chevron-right" size={18} color="#A7A7A7" />
               }
-              onPress={() => navigation.navigate("Help")}
+              onPress={() => navigation.navigate('Help')}
             />
             <View style={styles.separator} />
             <SettingButton
