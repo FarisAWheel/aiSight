@@ -7,6 +7,7 @@ import HomePage from './pages/home_page';
 import HistoryPage from './pages/peopleHistory_page';
 import CameraPage from './pages/camera_Steam';
 import HelpPage from "./pages/help_page";
+import SettingsPage from "./pages/settings_page";
 
 const Stack = createStackNavigator();
 
@@ -20,6 +21,7 @@ export default function App() {
                 <Stack.Screen name="PeopleHistory" component={HistoryPage} />
                 <Stack.Screen name="CameraFeed" component={CameraPage} />
                 <Stack.Screen name="Help" component={HelpPage} />
+                <Stack.Screen name="Settings" component={SettingsPage} />
             </Stack.Navigator>
         </NavigationContainer>
   );
