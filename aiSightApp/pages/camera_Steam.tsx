@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Dimensions, Platform } from 'react-native';
 import { WebView } from 'react-native-webview';
+import LinearGradient from 'react-native-linear-gradient';
 
 // Added imports
 import { useRef } from 'react';
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
   stream: {
     width: Dimensions.get('window').width - 20,
     height: 300,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#BADFC0',
   },
   // Added styles for button
   button: {
