@@ -41,7 +41,6 @@ string initBLE() {
   // Initalize Server
   pServer = BLEDevice::createServer();
   BLEService* pService = pServer->createService(SERVICE_UUID);
-  BLEAdvertising* pAdvertiser = pServer->getAdvertising();
 
   // Initalize SSID and Password
   BLECharacteristic* pSSID = pService->createCharacteristic(SSID_CHAR_UUID, BLECharacteristic::PROPERTY_READ);
@@ -61,10 +60,8 @@ string initBLE() {
   pPassword->setCallbacks(new Callbacks(pServer));
 
   // Begin advertising
-  BLEAdvertisementData pAdvdata;
-  pAdvdata.setName("aiSight Camera");
-  pAdvdata.setCompleteServices(pService->getUUID());
-  pAdvertiser->setAdvertisementData(pAdvdata);
+  BLEAdvertising* pAdvertiser = pServer->getAdvertising();
+  pAdvertiser->addServiceUUID(pService->getUUID());
   pAdvertiser->start();
   Serial.println("Enabling BLE");
 
