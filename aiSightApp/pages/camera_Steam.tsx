@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, Dimensions, Platform, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Platform, TouchableOpacity, ActivityIndicator, Alert, ScrollView } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useRef, useState, useEffect } from 'react';
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as FileSystem from 'expo-file-system';
 import { loadModel, runModel } from '../utils/onnxModel';
+import { generateDescription } from '../utils/openAIClient'
 import { captureRef } from 'react-native-view-shot';
 
 // Import the types locally since we'll use the implementations from onnxModel.ts
@@ -26,6 +27,9 @@ const CameraPage = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [detectionResults, setDetectionResults] = useState<any[]>([]);
   const [modelSession, setModelSession] = useState<any>(null);
+  const [imageBase64, setImageBase64] = useState<string>('');
+  const [aiDescription, setAiDescription] = useState<string>('');
+  const [isGeneratingDescription, setIsGeneratingDescription] = useState(false);
 
   // Load model on component mount
   useEffect(() => {
@@ -52,6 +56,7 @@ const CameraPage = () => {
     
     try {
       setIsProcessing(true);
+      setAiDescription('');
       console.log("Starting capture process...");
       
       // Take screenshot of the view containing the WebView
@@ -97,6 +102,7 @@ const CameraPage = () => {
       }
       
       console.log("Image converted to base64, length:", base64.length);
+      setImageBase64(base64);
       
       // Convert base64 to tensor and run model
       const imageTensor = await imageToTensor(base64, 640, 640);
@@ -113,6 +119,22 @@ const CameraPage = () => {
       Alert.alert("Error", error.message || "Failed to process image. Please try again.");
     } finally {
       setIsProcessing(false);
+    }
+  };
+  
+  // Function to get AI description of the detected objects
+  const getAiDescription = async () => {
+    if (detectionResults.length === 0) return;
+    
+    try {
+      setIsGeneratingDescription(true);
+      const description = await generateDescription(detectionResults, imageBase64);
+      setAiDescription(description || 'No description generated');
+    } catch (error: any) {
+      console.error("Error generating AI description:", error);
+      Alert.alert("Error", error.message || "Failed to generate description. Please try again.");
+    } finally {
+      setIsGeneratingDescription(false);
     }
   };
   
@@ -171,7 +193,7 @@ const CameraPage = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.headerText}>Camera Stream</Text>
 
       {/* Wrap WebView in a View with ref for capturing */}
@@ -217,9 +239,30 @@ const CameraPage = () => {
               {detection.className}: {(detection.confidence * 100).toFixed(1)}%
             </Text>
           ))}
+          
+          {/* AI Describe button */}
+          <TouchableOpacity 
+            style={[styles.button, styles.aiButton, isGeneratingDescription && styles.buttonDisabled]} 
+            onPress={getAiDescription}
+            disabled={isGeneratingDescription}
+          >
+            {isGeneratingDescription ? (
+              <ActivityIndicator color="#fff" size="small" />
+            ) : (
+              <Text style={styles.buttonText}>Get AI Description</Text>
+            )}
+          </TouchableOpacity>
+          
+          {/* AI Description result */}
+          {aiDescription ? (
+            <View style={styles.aiDescriptionContainer}>
+              <Text style={styles.aiDescriptionHeader}>AI Description:</Text>
+              <Text style={styles.aiDescriptionText}>{aiDescription}</Text>
+            </View>
+          ) : null}
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 };
 
@@ -254,6 +297,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#34C759',
     marginTop: 8,
   },
+  aiButton: {
+    backgroundColor: '#5856D6',
+    marginTop: 16,
+  },
   buttonDisabled: {
     opacity: 0.7,
   },
@@ -276,6 +323,21 @@ const styles = StyleSheet.create({
   resultItem: {
     fontSize: 14,
     marginBottom: 4,
+  },
+  aiDescriptionContainer: {
+    marginTop: 16,
+    padding: 10,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 4,
+  },
+  aiDescriptionHeader: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  aiDescriptionText: {
+    fontSize: 14,
+    lineHeight: 20,
   }
 });
 
