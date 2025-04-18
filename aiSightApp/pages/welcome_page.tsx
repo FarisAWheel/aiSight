@@ -3,12 +3,12 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import GradientBackground from "../components/GradientBackground";
 
 //welcome page
-const WelcomePage = ({ navigation }: { navigation: any }) => {
-  return (
-    <GradientBackground>
-      <Text style={styles.helloText}>Hello,</Text>
-      <Text style={styles.welcomeText}>Welcome to AiSight!</Text>
-      <View style={styles.line} />
+const WelcomePage = ({navigation}:{navigation:any}) => {
+    return (
+        <GradientBackground>
+                <Text style={styles.helloText}>Hello,</Text>
+                <Text style={styles.welcomeText}>Welcome to AiSight</Text>
+                <View style={styles.line} />
 
       <TouchableOpacity
         style={styles.button}
