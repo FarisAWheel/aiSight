@@ -64,7 +64,7 @@ const HomePage = ({ navigation }: { navigation: any }) => {
                             </LinearGradient>
                         </TouchableOpacity>
                         <View style={{ flexDirection: 'row' }}>
-                            <TouchableOpacity style={styles.settingsButton} onPress={() => navigation.navigate('')}>
+                            <TouchableOpacity style={styles.settingsButton} onPress={() => navigation.navigate('Settings')}>
                                 <Text style={styles.ViewbuttonText}>Settings</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.historyButton} onPress={() => navigation.navigate('PeopleHistory')}>

@@ -104,17 +104,17 @@ const HelpPage = ({ navigation }: { navigation: any }) => {
               viewKey="device"
               onPress={() => setSelectedKey("device")}
             >
-              <Text>Fascinating question!</Text>
+              <Text style={{marginLeft: 43, fontSize: 15}}>Fascinating question!</Text>
             </AccordionItem>
             <View style={styles.separator} />
             <AccordionItem
               triggerText="Why won't my feed display properly?"
-              icon={<FontAwesome6 name="display" size={18} color="#A7A7A7" />}
+              icon={<FontAwesome6 name="display" size={18} color= "#A7A7A7" />}
               isExpanded={selectedKey === "feed"}
               viewKey="feed"
               onPress={() => setSelectedKey("feed")}
             >
-              <Text>Fascinating question!</Text>
+              <Text style={{marginLeft: 43, fontSize: 15}}>Fascinating question!</Text>
             </AccordionItem>
             <View style={styles.separator} />
             <AccordionItem
@@ -130,7 +130,7 @@ const HelpPage = ({ navigation }: { navigation: any }) => {
               viewKey="feed"
               onPress={() => setSelectedKey("tts")}
             >
-              <Text>Fascinating question!</Text>
+              <Text style={{marginLeft: 43, fontSize: 15}}>Fascinating question!</Text>
             </AccordionItem>
           </View>
         </View>
